@@ -1,5 +1,5 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-export const API_HOST = import.meta.env.VITE_API_HOST || 'http://localhost:5000';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://events-szqw.onrender.com/api';
+export const API_HOST = import.meta.env.VITE_API_HOST || 'https://events-szqw.onrender.com';
 
 export const getServerUrl = (path = '') => {
   if (!path) return API_HOST;
