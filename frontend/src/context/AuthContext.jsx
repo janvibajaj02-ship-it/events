@@ -10,9 +10,22 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchMe = async () => {
+      // Check for token in URL (from Google OAuth)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get('token');
+      
+      if (urlToken) {
+        localStorage.setItem('token', urlToken);
+        // Clean up URL to remove token
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
       try {
         const { data } = await api.get('/auth/me');
         setUser(data.user);
+        if (urlToken) {
+          toast.success('Successfully logged in with Google!');
+        }
       } catch {
         setUser(null);
       } finally {
