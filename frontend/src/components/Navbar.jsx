@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { LogOut, Bell } from 'lucide-react';
 import NotificationDropdown from './NotificationDropdown';
+import { getServerUrl } from '../utils/apiConfig';
 
 const Navbar = () => {
   const { user, logout } = useAuth();

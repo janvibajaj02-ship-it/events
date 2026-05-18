@@ -4,6 +4,7 @@ import { User, Mail, Shield, School, Smartphone, Hash, Calendar, LogOut, Camera,
 import { motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import api from '../api/axios';
+import { getServerUrl } from '../utils/apiConfig';
 
 const Profile = () => {
   const { user, logout, setUser } = useAuth();
