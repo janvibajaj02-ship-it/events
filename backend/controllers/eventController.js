@@ -101,7 +101,7 @@ exports.approveEvent = async (req, res, next) => {
 
 exports.rejectEvent = async (req, res, next) => {
   try {
-    const { reason } = req.body;
+    const { reason } = req.body || {};
     const event = await eventService.rejectEvent(req.params.id, reason);
 
     // Notify organizer

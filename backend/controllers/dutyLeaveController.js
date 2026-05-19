@@ -4,7 +4,7 @@ const Event = require('../models/Event');
 
 exports.applyForDL = async (req, res) => {
   try {
-    const { registrationId, rollNo, reason } = req.body;
+    const { registrationId, rollNo, reason } = req.body || {};
 
     const registration = await Registration.findById(registrationId).populate('eventId');
     if (!registration) {
@@ -73,7 +73,7 @@ exports.getOrganizerRequests = async (req, res) => {
 
 exports.updateDLStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status } = req.body || {};
     const dl = await DutyLeave.findById(req.params.id).populate('eventId');
 
     if (!dl) {
