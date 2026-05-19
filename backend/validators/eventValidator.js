@@ -34,10 +34,9 @@ const validateCreateEvent = (data) => {
     throw new ValidationError('Max seats must be a positive whole number');
   }
 
-  // Parse event start date and time to create a precise start time comparison
   let eventStartDateTime = new Date(date);
   if (startTime) {
-    const timeMatch = startTime.match(/^(\d+):(\d+)\s*(AM|PM)?$/i);
+    const timeMatch = startTime.match(/^(\d+)[:.](\d+)\s*(AM|PM)?$/i);
     if (timeMatch) {
       let hours = parseInt(timeMatch[1], 10);
       const minutes = parseInt(timeMatch[2], 10);
@@ -48,7 +47,7 @@ const validateCreateEvent = (data) => {
       }
       eventStartDateTime.setHours(hours, minutes, 0, 0);
     } else {
-      const parts = startTime.split(':');
+      const parts = startTime.split(/[:.]/);
       if (parts.length >= 2) {
         eventStartDateTime.setHours(parseInt(parts[0], 10), parseInt(parts[1], 10), 0, 0);
       }
