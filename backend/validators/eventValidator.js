@@ -17,11 +17,7 @@ const validateCreateEvent = (data) => {
     throw new ValidationError('Event start date is required');
   }
 
-  if (!endDate) {
-    throw new ValidationError('Event end date is required');
-  }
-
-  if (new Date(date) > new Date(endDate)) {
+  if (endDate && new Date(date) > new Date(endDate)) {
     throw new ValidationError('End date must be after start date');
   }
 
