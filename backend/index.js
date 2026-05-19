@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const connectDB = require('./config/db');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
@@ -57,23 +58,20 @@ app.use(errorHandler);
 
 // MongoDB Connection
 const User = require('./models/User');
-mongoose.connect(process.env.MONGO_URI)
-  .then(async () => {
-    console.log('MongoDB Connected');
-    // Seed Admin
-    const adminEmail = 'janvibajaj02@gmail.com';
-    const adminExists = await User.findOne({ email: adminEmail });
-    if (!adminExists) {
-      await User.create({
-        name: 'Super Admin',
-        email: adminEmail,
-        password: '12345678',
-        role: 'admin'
-      });
-      console.log('Admin user seeded');
-    }
-  })
-  .catch(err => console.error('MongoDB Connection Error:', err));
+connectDB().then(async () => {
+  // Seed Admin
+  const adminEmail = 'janvibajaj02@gmail.com';
+  const adminExists = await User.findOne({ email: adminEmail });
+  if (!adminExists) {
+    await User.create({
+      name: 'Super Admin',
+      email: adminEmail,
+      password: '12345678',
+      role: 'admin'
+    });
+    console.log('Admin user seeded');
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
