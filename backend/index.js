@@ -41,8 +41,17 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+// EJS Views Config
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 // Static files for uploads
 app.use('/uploads', express.static(uploadsDir));
+
+// Base route for EJS View
+app.get('/', (req, res) => {
+  res.render('home');
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
