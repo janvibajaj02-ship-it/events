@@ -8,7 +8,7 @@ const path = require('path');
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, '../uploads/'),
+  destination: (req, file, cb) => cb(null, path.join(__dirname, '../uploads/')),
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
 });
 const upload = multer({ storage });
@@ -30,12 +30,19 @@ router.get('/google', (req, res, next) => {
   })(req, res, next);
 });
 router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res, next) => {
+    passport.authenticate('google', { failureRedirect: `${process.env.FRONTEND_URL}/login?error=oauth_failed` })(req, res, next);
+  },
   (req, res) => {
     // Generate token and redirect to frontend with token in query or cookie
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.cookie('token', token, { httpOnly: true });
-    res.redirect(`${process.env.FRONTEND_URL}/`);
+    res.cookie('token', token, { 
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none'
+    });
+    // also pass token in URL just in case cookies are completely blocked by privacy settings
+    res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
   }
 );
 
